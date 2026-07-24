@@ -6,7 +6,7 @@ class enemy:
     def __init__(self,x,y,type, id):
         self.x = x
         self.y = y
-        self.type
+        self.type = type
         self.id = id
     def update():
         pass
