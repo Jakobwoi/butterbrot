@@ -55,7 +55,9 @@ async def main():
             print("Escape key pressed")   
 
         if level == 1:
-            pass
+            if map.check_exit(player.pos):
+                print("Exit erreicht! Level abgeschlossen!")
+                 
 
 
         keys = pygame.key.get_pressed()

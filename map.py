@@ -9,13 +9,14 @@ class camera:
 cam = camera(0,0)
 
 class tile:
-    def __init__(self, name, x, y, sx, sy, lscale):
+    def __init__(self, name, x, y, sx, sy, lscale, is_exit=False):
         self.x = x
         self.y = y
         self.sizey = sy
         self.sizex = sx
         self.tex = es.load_sprite(name)
         self.lscale = lscale
+        self.is_exit = is_exit
 
 def init():
     global map
@@ -33,8 +34,18 @@ maps = {
     ],
 
     "level1": [
-        [tile("grass_middle_tile", 0, 0, 32*4, 32*4,4), tile("grass_middle_tile", 32*4, 0, 32*4, 32*4,4)],
-        [tile("grass_middle_tile", 0, 32*4, 32*4, 32*4,4), tile("grass_middle_tile", 32*4, 32*4, 32*4, 32*4,4)]
+        # Row 0 (top)
+        [tile("grass_upper_left_tile", 0, 0, 32*8, 32*8, 4), 
+         tile("grass_upper_tile", 256*4, 0, 32*8, 32*8, 4), 
+         tile("grass_upper_right_tile", 256*8, 0, 32*8, 32*8, 4)],
+        # Row 1 (middle)
+        [tile("grass_left_tile", 0, 256*4, 32*8, 32*8, 4), 
+         tile("test", 256*4, 256*4, 32*8, 32*8, 4, is_exit=True), 
+         tile("grass_right_tile", 256*8, 256*4, 32*8, 32*8, 4)],
+        # Row 2 (bottom)
+        [tile("grass_lower_left_tile", 0, 256*8, 32*8, 32*8, 4), 
+         tile("grass_lower_tile", 256*4, 256*8, 32*8, 32*8, 4), 
+         tile("grass_lower_right_tile", 256*8, 256*8, 32*8, 32*8, 4)]
     ]
 }
 
@@ -53,3 +64,19 @@ def draw():
             y.out2 = pygame.transform.scale(y.out, (y.sizex*y.lscale,y.sizey*y.lscale))
             y.out_rect = y.out2.get_rect(center=(midx+y.x+cam.x, midy+y.y+cam.y))
             surface.blit(y.out2, y.out_rect)
+
+def check_exit(player_pos):
+    """Prüft, ob der Spieler auf dem Ausgang (middle Tile) ist"""
+    for row in map:
+        for tile_obj in row:
+            if tile_obj.is_exit:
+                # Mittelpunkt des Ausgangs
+                exit_center_x = tile_obj.x + (tile_obj.sizex * tile_obj.lscale) / 2
+                exit_center_y = tile_obj.y + (tile_obj.sizey * tile_obj.lscale) / 2
+                
+                # Bereich um den Ausgang (150 Pixel)
+                distance = ((player_pos[0] - exit_center_x)**2 + (player_pos[1] - exit_center_y)**2)**0.5
+                if distance < 150:
+                    print("Player is on the exit tile.")
+                    return True
+    return False
