@@ -2,8 +2,9 @@ import pygame
 import random
 import essentials as es
 from math import sqrt
+import map
 
-enemy_types = {"enemy0": 10, "enemy1": 11, "enemy2": 12, "Face1": 13}
+enemy_types = {"enemy0": 10, "enemy0-i": 20, "enemy2": 12, "Face1": 13}
 
 def init():
     global enemys
@@ -20,17 +21,17 @@ class enemy:
         self.id = id
         self.current = list(type + "_0010_0")
         self.sprites = dict()
-        dirs = list("0000")
-        for i in range(0, 4, 2):
-            dirs[i] = "1"
-            for l in range(1, 4, 2):
-                for t in range(2):
-                    dirs[l] = str(t)
-                    for j in range(4):
-                        print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
-                        self.sprites[type + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(type + "_" + ''.join(dirs) + "_" + str(j))
-                    dirs[l] = "0"
-            dirs[i] = "0"
+        # dirs = list("0000")
+        # for i in range(0, 4, 2):
+        #     dirs[i] = "1"
+        #     for l in range(1, 4, 2):
+        #         for t in range(2):
+        #             dirs[l] = str(t)
+        #             for j in range(4):
+        #                 print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
+        #                 self.sprites[type + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(type + "_" + ''.join(dirs) + "_" + str(j))
+        #             dirs[l] = "0"
+        #     dirs[i] = "0"
         dirs = list("0001")
         for j in range(4):
             print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
@@ -76,7 +77,7 @@ class enemy:
 
     def draw(self):
         sprite = self.sprites["".join([str(x) for x in self.current])]
-        self.window.blit(sprite, self.pos)
+        self.window.blit(sprite, (self.pos[0] + map.cam.x, self.pos[1] + map.cam.y))
 
 def spawn(window, pos, health, strength, speed, type):
     global enemys
