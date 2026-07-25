@@ -30,6 +30,11 @@ maps = {
     "test": [
         [tile("test", 0, 0, 32, 32), tile("test", 32, 0, 32, 32)],
         [tile("test", 0, 32, 32, 32), tile("test", 32, 32, 32, 32)]
+    ],
+
+    "level1": [
+        [tile("grass_middle_tile", 0, 0, 32, 32), tile("grass_middle_tile", 32, 0, 32, 32)],
+        [tile("grass_middle_tile", 0, 32, 32, 32), tile("grass_middle_tile", 32, 32, 32, 32)]
     ]
 }
 
