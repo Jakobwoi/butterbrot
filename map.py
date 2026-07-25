@@ -9,13 +9,13 @@ class camera:
 cam = camera(0,0)
 
 class tile:
-    def __init__(self, name, x, y, sx, sy):
+    def __init__(self, name, x, y, sx, sy, lscale):
         self.x = x
         self.y = y
         self.sizey = sy
         self.sizex = sx
         self.tex = es.load_sprite(name)
-        self.lscale = 1
+        self.lscale = lscale
 
 def init():
     global map
@@ -28,13 +28,13 @@ def load_map(name):
 
 maps = {
     "test": [
-        [tile("test", 0, 0, 32, 32), tile("test", 32, 0, 32, 32)],
-        [tile("test", 0, 32, 32, 32), tile("test", 32, 32, 32, 32)]
+        [tile("test", 0, 0, 32, 32,1), tile("test", 32, 0, 32, 32,1)],
+        [tile("test", 0, 32, 32, 32,1), tile("test", 32, 32, 32, 32,1)]
     ],
 
     "level1": [
-        [tile("grass_middle_tile", 0, 0, 32, 32), tile("grass_middle_tile", 32, 0, 32, 32)],
-        [tile("grass_middle_tile", 0, 32, 32, 32), tile("grass_middle_tile", 32, 32, 32, 32)]
+        [tile("grass_middle_tile", 0, 0, 32*4, 32*4,4), tile("grass_middle_tile", 32*4, 0, 32*4, 32*4,4)],
+        [tile("grass_middle_tile", 0, 32*4, 32*4, 32*4,4), tile("grass_middle_tile", 32*4, 32*4, 32*4, 32*4,4)]
     ]
 }
 

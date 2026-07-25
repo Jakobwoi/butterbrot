@@ -18,7 +18,7 @@ for path in os.listdir("images/"):
 player = Player(screen, pygame.Vector2(0, 0),"Invisibility", faces)
 
 map.init()
-map.load_map("test")
+map.load_map("level1")
 level = 1
 l1music = es.load_music("oberweltidk")
 l1playing = False
