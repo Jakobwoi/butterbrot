@@ -70,13 +70,18 @@ def check_exit(player_pos):
     for row in map:
         for tile_obj in row:
             if tile_obj.is_exit:
-                # Mittelpunkt des Ausgangs
+                # Exit Mittelpunkt
                 exit_center_x = tile_obj.x + (tile_obj.sizex * tile_obj.lscale) / 2
                 exit_center_y = tile_obj.y + (tile_obj.sizey * tile_obj.lscale) / 2
                 
-                # Bereich um den Ausgang (150 Pixel)
+                # Distance berechnen
                 distance = ((player_pos[0] - exit_center_x)**2 + (player_pos[1] - exit_center_y)**2)**0.5
-                if distance < 150:
-                    print("Player is on the exit tile.")
+                
+                # Debug-Info
+                print(f"Player: {player_pos}, Exit: ({exit_center_x}, {exit_center_y}), Distance: {distance}")
+                
+                # Größerer Radius (halbe Tile-Größe = ~200px)
+                if distance < 200:
+                    print("✓ Exit erreicht!")
                     return True
     return False
