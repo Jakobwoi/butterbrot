@@ -4,7 +4,7 @@ from player import Player
 pygame.init()
 face1 = pygame.image.load("images/face1.jpg")
 screen = pygame.display.set_mode((320, 320))
-player = Player(screen, pygame.Vector2(50, 50), "Invisibility")
+player = Player(screen, pygame.Vector2(50, 50), "Invisibility", "standard")
 clock = pygame.time.Clock()
 
 running = True
