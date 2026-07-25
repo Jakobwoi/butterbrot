@@ -6,7 +6,6 @@ class Player():
     def __init__(self, window, pos, face, faces):
         self.window = window
         self.pos = pos
-        self.lscale = 1
         self.face = face
         self.faces = faces
         self.health = 100
@@ -39,10 +38,16 @@ class Player():
             self.pos = (self.pos[0] + horizontalMove * self.speed, self.pos[1] - verticalMove * self.speed)
         if horizontalMove == 0 and verticalMove == 0:
             self.walkCount = 0
-        else: 
+        elif not (abs(horizontalMove) == 1 and abs(verticalMove) == 1): 
             self.faceImage[6] = int(verticalMove == 1)
             self.faceImage[7] = int(horizontalMove == -1)
             self.faceImage[8] = int(verticalMove == -1)
+            self.faceImage[9] = int(horizontalMove == 1)
+            self.walkCount += 1
+        else:
+            self.faceImage[6] = 0
+            self.faceImage[7] = int(horizontalMove == -1)
+            self.faceImage[8] = 0
             self.faceImage[9] = int(horizontalMove == 1)
             self.walkCount += 1
         self.faceImage[11] = (self.walkCount * self.speed // 25) % 4
