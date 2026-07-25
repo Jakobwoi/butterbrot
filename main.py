@@ -21,7 +21,8 @@ map.init()
 map.load_map("test")
 level = 1
 l1music = es.load_music("oberweltidk")
-l1playing = Falseenemys.init()
+l1playing = False
+enemys.init()
 
 running = True
 enemys.spawn(screen, (100, 100), 100, 5, 2, "Face1")
