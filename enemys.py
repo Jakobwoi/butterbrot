@@ -1,9 +1,11 @@
 import pygame
 import random
 
+enemy_types = {"enemy0": 10, "enemy1": 11, "enemy2": 12}
+
 def init():
     global enemys
-    enemys = []
+    enemys = dict()
 
 class enemy:
     def __init__(self,x,y,type, id):
@@ -18,11 +20,12 @@ class enemy:
 
 def spawn(x,y,type):
     global enemys
-    tempenemy = enemy(x,y,type)
-    enemys.append(tempenemy)
+    enemy_id = int(str(enemy_types[type]) + ("{:02d}".format(random.randint(0, 99)))) # player id is 4 digits, first 2 digits are type, last 2 are random
+    print("Spawning enemy with id: " + str(enemy_id))
+    tempenemy = enemy(x,y,type, enemy_id)
+    enemys[enemy_id] = tempenemy
 
-def del(id):
+def delete(id):
     global enemys
-    for en in enemys:
-        if en.id == id:
-            enemys.remove(en)
+    if id in enemys:
+        del enemys[id]
