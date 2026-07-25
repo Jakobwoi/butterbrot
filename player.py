@@ -12,14 +12,12 @@ class Player():
         self.strength = 5
         self.visible = True
         self.telePoint = pos
-        self.faceImage = "Face0_0010_0"
+        self.faceImage = list("Face0_0010_0")
         self.walkCount = 0
 
-    def update():
-        pass
 
     def draw(self):
-        self.window.blit(self.faces[self.faceImage], self.pos)
+        self.window.blit(self.faces["".join([str(x) for x in self.faceImage])], self.pos)
 
     def move(self, w, a, s, d):
         horizontalMove = d - a
@@ -31,12 +29,11 @@ class Player():
         if horizontalMove == 0 and verticalMove == 0:
             self.walkCount = 0
         else: 
-            self.faceImage[6] = horizontalMove == 1
-            self.faceImage[7] = verticalMove == -1
-            self.faceImage[8] = horizontalMove == -1
-            self.faceImage[9] = verticalMove == 1
+            self.faceImage[6] = int(verticalMove == 1)
+            self.faceImage[7] = int(horizontalMove == -1)
+            self.faceImage[8] = int(verticalMove == -1)
+            self.faceImage[9] = int(horizontalMove == 1)
             self.walkCount += 1
-        self.walkCount += 1
         self.faceImage[11] = self.walkCount % 4
 
     def swap(self, newFace):
