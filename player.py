@@ -11,6 +11,7 @@ class Player():
         self.health = 100
         self.speed = 2
         self.strength = 5
+        self.lscale = 1
         self.visible = True
         self.telePoint = pos
         self.faceImage = list("Face0_0010_0")
