@@ -2,8 +2,9 @@ import pygame
 import random
 import essentials as es
 from math import sqrt
+import map
 
-enemy_types = {"enemy0": 10, "enemy1": 11, "enemy2": 12, "Face1": 13}
+enemy_types = {"enemy0": 10, "enemy0-i": 20, "enemy2": 12, "Face1": 13}
 
 def init():
     global enemys
@@ -20,23 +21,23 @@ class enemy:
         self.id = id
         self.current = list(type + "_0010_0")
         self.sprites = dict()
-        dirs = list("0000")
-        for i in range(0, 4, 2):
-            dirs[i] = "1"
-            for l in range(1, 4, 2):
-                for t in range(2):
-                    dirs[l] = str(t)
-                    for j in range(4):
-                        print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
-                        self.sprites[type + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(type + "_" + ''.join(dirs) + "_" + str(j))
-                    dirs[l] = "0"
-            dirs[i] = "0"
-        dirs = list("0001")
+        # dirs = list("0000")
+        # for i in range(0, 4, 2):
+        #     dirs[i] = "1"
+        #     for l in range(1, 4, 2):
+        #         for t in range(2):
+        #             dirs[l] = str(t)
+        #             for j in range(4):
+        #                 print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
+        #                 self.sprites[type + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(type + "_" + ''.join(dirs) + "_" + str(j))
+        #             dirs[l] = "0"
+        #     dirs[i] = "0"
+        dirs = list("0010")
         for j in range(4):
             print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
             self.sprites[type + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(type + "_" + ''.join(dirs) + "_" + str(j))
             # dirs[i+2] = "0"
-        dirs = list("0100")
+        dirs = list("1000")
         for j in range(4):
             print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
             self.sprites[type + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(type + "_" + ''.join(dirs) + "_" + str(j))
@@ -48,6 +49,19 @@ class enemy:
     
         self.moveX = 0
         self.moveY = 1
+
+    def changeType(self, newType):
+        self.type = newType
+        self.current = list(newType + "_0010_0")
+        self.sprites = dict()
+        dirs = list("0010")
+        for j in range(4):
+            print("Loaded sprite: " + newType + "_"+ ''.join(dirs) +"_" + str(j))
+            self.sprites[newType + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(newType + "_" + ''.join(dirs) + "_" + str(j))
+        dirs = list("1000")
+        for j in range(4):
+            print("Loaded sprite: " + newType + "_"+ ''.join(dirs) +"_" + str(j))
+            self.sprites[newType + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(newType + "_" + ''.join(dirs) + "_" + str(j))
     
     def update(self):
         if self.loopCount < self.loopLength:
@@ -60,7 +74,7 @@ class enemy:
 
     def move(self, x, y):
         if not (abs(x) == 1 and abs(y) == 1):
-            self.pos = (self.pos[0] + x * sqrt(2)/2 * self.speed, self.pos[1] - y * sqrt(2)/2 * self.speed)
+            self.pos = (self.pos[0] + x * sqrt(2) * self.speed, self.pos[1] - y * sqrt(2) * self.speed)
         else:
             self.pos = (self.pos[0] + x * self.speed, self.pos[1] - y * self.speed)
         if x == 0 and y == 0:
@@ -72,11 +86,11 @@ class enemy:
             self.current[len(self.type)+4] = int(x == 1)
             print("".join([str(x) for x in self.current]))
             self.walkCount += 1
-        self.current[len(self.type)+6] = (self.walkCount * self.speed // 5) % 4
+        self.current[len(self.type)+6] = (self.walkCount * self.speed // 15) % 4
 
     def draw(self):
         sprite = self.sprites["".join([str(x) for x in self.current])]
-        self.window.blit(sprite, self.pos)
+        self.window.blit(sprite, (self.pos[0] + map.cam.x, self.pos[1] + map.cam.y))
 
 def spawn(window, pos, health, strength, speed, type):
     global enemys

@@ -34,9 +34,11 @@ class Player():
         horizontalMove = d - a
         verticalMove = w - s
         if not (abs(horizontalMove) == 1 and abs(verticalMove) == 1):
-            self.pos = (self.pos[0] + horizontalMove * sqrt(2) * self.speed, self.pos[1] - verticalMove * sqrt(2) * self.speed)
+            moveVector = (horizontalMove * sqrt(2) * self.speed, verticalMove * sqrt(2) * self.speed)
         else:
-            self.pos = (self.pos[0] + horizontalMove * self.speed, self.pos[1] - verticalMove * self.speed)
+            moveVector = (horizontalMove * self.speed, verticalMove * self.speed)
+        self.pos = (self.pos[0] + moveVector[0], self.pos[1] - moveVector[1])
+        
         if horizontalMove == 0 and verticalMove == 0:
             self.walkCount = 0
         elif not (abs(horizontalMove) == 1 and abs(verticalMove) == 1): 
@@ -52,6 +54,7 @@ class Player():
             self.faceImage[9] = int(horizontalMove == 1)
             self.walkCount += 1
         self.faceImage[11] = (self.walkCount * self.speed // 15) % 4
+        return moveVector
 
     def swap(self, newFace):
         oldFace = self.face

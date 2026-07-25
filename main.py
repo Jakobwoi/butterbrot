@@ -43,14 +43,11 @@ async def main():
             elif event.type == pygame.VIDEORESIZE:
                 screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
             
-        if pygame.key.get_pressed()[pygame.K_a] == True:
-            map.cam.x += 2.828
-        if pygame.key.get_pressed()[pygame.K_d] == True:
-            map.cam.x -= 2.828
-        if pygame.key.get_pressed()[pygame.K_w] == True:
-            map.cam.y += 2.828
-        if pygame.key.get_pressed()[pygame.K_s] == True:
-            map.cam.y -= 2.828
+        keys = pygame.key.get_pressed()
+        cameraMove = player.move(keys[pygame.K_w], keys[pygame.K_a], keys[pygame.K_s], keys[pygame.K_d]) 
+        map.cam.x -= cameraMove[0]
+        map.cam.y += cameraMove[1]
+
         if pygame.key.get_pressed()[pygame.K_ESCAPE] == True:
             print("Escape key pressed")   
 
@@ -59,9 +56,6 @@ async def main():
                 print("Exit erreicht! Level abgeschlossen!")
                  
 
-
-        keys = pygame.key.get_pressed()
-        player.move(keys[pygame.K_w], keys[pygame.K_a], keys[pygame.K_s], keys[pygame.K_d]) 
 
         screen.fill("blue")
         map.draw()
