@@ -25,11 +25,11 @@ async def main():
                 map.cam.x += 10
             elif pygame.key.get_pressed()[pygame.K_d] == True:
                 map.cam.x -= 10
-            elif pygame.key.get_pressed()[pygame.K_w] == True:
+            if pygame.key.get_pressed()[pygame.K_w] == True:
                 map.cam.y += 10
             elif pygame.key.get_pressed()[pygame.K_s] == True:
                 map.cam.y -= 10
-            elif pygame.key.get_pressed()[pygame.K_ESCAPE] == True:
+            if pygame.key.get_pressed()[pygame.K_ESCAPE] == True:
                 print("Escape key pressed")    
 
         screen.fill("blue")
