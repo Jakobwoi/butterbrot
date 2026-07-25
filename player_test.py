@@ -5,15 +5,15 @@ from statue import Statue
 
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
-statueImage = pygame.image.load("assets/statue_after_switching.png")
 faces = dict()
 for path in os.listdir("images/"):
     faces[path.removesuffix(".png")] = pygame.image.load(f"images/{path}")
 
-player = Player(screen, pygame.Vector2(50, 50), "Normal", faces)
-statue = Statue(screen, pygame.Vector2(500, 70), statueImage, "Invisibility")
+player = Player(screen, pygame.Vector2(-200, 50), "Normal", faces)
+statue = Statue(screen, pygame.Vector2(500, 70), faces, "Invisibility")
 clock = pygame.time.Clock()
 
+canSwap = True
 running = True
 while running:
     keys = pygame.key.get_pressed()
@@ -22,9 +22,15 @@ while running:
     screen.fill("grey")
     statue.draw()
     player.draw()
-    pygame.display.flip()
 
-    print(statue.checkCollision(player.pos, faces["".join([str(x) for x in player.faceImage])].get_size()))
+    if statue.checkCollision(player.pos, faces["".join([str(x) for x in player.faceImage])].get_size()):
+        if canSwap:
+            statue.swap(player.swap(statue.face))
+            print(player.face, statue.face)
+            canSwap = False
+    else:
+        canSwap = True
+    pygame.display.flip()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
