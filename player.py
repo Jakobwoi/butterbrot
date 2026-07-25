@@ -1,5 +1,6 @@
 import pygame
 from math import sqrt
+import map
 
 class Player():
     def __init__(self, window, pos, face, faces):
@@ -26,7 +27,7 @@ class Player():
         print("Drawing player at position: ", (self.pos[0]+midx, self.pos[1]+midy))
         out = self.faces["".join([str(x) for x in self.faceImage])]
         out2 = pygame.transform.scale(out, (out.get_width()*self.lscale,out.get_height()*self.lscale))
-        out_rect = out2.get_rect(center=(midx+self.pos[0], midy+self.pos[1]))
+        out_rect = out2.get_rect(center=(midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y))
         surface.blit(out2, out_rect)
 
     def move(self, w, a, s, d):

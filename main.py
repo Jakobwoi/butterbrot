@@ -3,6 +3,7 @@ import asyncio
 import os
 
 import map
+import essentials as es
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
@@ -17,12 +18,22 @@ player = Player(screen, pygame.Vector2(0, 0),"Invisibility", faces)
 
 map.init()
 map.load_map("test")
-
+level = 1
+l1music = es.load_music("oberweltidk")
+l1playing = False
 
 running = True
 async def main():
     global running,screen,player
-    while running: 
+    while running:
+        if level == 1 and not l1playing:
+            l1music.play(-1)
+            
+        elif level != 1 and l1playing:
+            l1music.stop()
+            
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -30,15 +41,18 @@ async def main():
                 screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
             
         if pygame.key.get_pressed()[pygame.K_a] == True:
-            map.cam.x += 10
+            map.cam.x += 2.828
         if pygame.key.get_pressed()[pygame.K_d] == True:
-            map.cam.x -= 10
+            map.cam.x -= 2.828
         if pygame.key.get_pressed()[pygame.K_w] == True:
-            map.cam.y += 10
+            map.cam.y += 2.828
         if pygame.key.get_pressed()[pygame.K_s] == True:
-            map.cam.y -= 10
+            map.cam.y -= 2.828
         if pygame.key.get_pressed()[pygame.K_ESCAPE] == True:
             print("Escape key pressed")   
+
+        if level == 1:
+            pass
 
 
         keys = pygame.key.get_pressed()
