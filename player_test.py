@@ -1,11 +1,16 @@
 import pygame
 from player import Player
+import os
 
 pygame.init()
 face1 = pygame.image.load("images/face1.jpg")
 screen = pygame.display.set_mode((600, 600))
 player = Player(screen, pygame.Vector2(50, 50), "Invisibility", face1, None, None, None)
+faces = dict()
+for path in os.listdir("images/"):
+    pass
 clock = pygame.time.Clock()
+
 
 running = True
 while running:
