@@ -54,7 +54,7 @@ class Player():
         self.faceImage[11] = (self.walkCount * self.speed // 15) % 4
 
     def swap(self, newFace):
-        oldFace = newFace
+        oldFace = self.face
         self.face = newFace
         self.faceImage[4] = ["Normal", "Invisibility", "Teleportation", "Super Speed", "Super Strength"].index(newFace)
         if newFace == "Normal":
@@ -78,6 +78,7 @@ class Player():
             self.speed = 2
             self.visible = True
             self.strength = 20
+            print(oldFace)
         return oldFace
     
     def setTelePoint(self, pos):
