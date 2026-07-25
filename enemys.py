@@ -1,3 +1,6 @@
+import pygame
+import random
+
 def init():
     global enemys
     enemys = []
