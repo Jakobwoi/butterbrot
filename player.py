@@ -5,6 +5,7 @@ class Player():
     def __init__(self, window, pos, face, faces):
         self.window = window
         self.pos = pos
+        self.lscale = 1
         self.face = face
         self.faces = faces
         self.health = 100
@@ -17,7 +18,16 @@ class Player():
 
 
     def draw(self):
-        self.window.blit(self.faces["".join([str(x) for x in self.faceImage])], self.pos)
+        surface = pygame.display.get_surface()
+        if surface is None:
+            return
+        midx = surface.get_width() / 2
+        midy = surface.get_height() / 2
+        print("Drawing player at position: ", (self.pos[0]+midx, self.pos[1]+midy))
+        out = self.faces["".join([str(x) for x in self.faceImage])]
+        out2 = pygame.transform.scale(out, (out.get_width()*self.lscale,out.get_height()*self.lscale))
+        out_rect = out2.get_rect(center=(midx+self.pos[0], midy+self.pos[1]))
+        surface.blit(out2, out_rect)
 
     def move(self, w, a, s, d):
         horizontalMove = d - a
@@ -34,7 +44,7 @@ class Player():
             self.faceImage[8] = int(verticalMove == -1)
             self.faceImage[9] = int(horizontalMove == 1)
             self.walkCount += 1
-        self.faceImage[11] = self.walkCount % 4
+        self.faceImage[11] = (self.walkCount * self.speed // 25) % 4
 
     def swap(self, newFace):
         oldFace = newFace

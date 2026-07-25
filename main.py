@@ -1,5 +1,6 @@
 import pygame
 import asyncio
+import os
 
 import map
 
@@ -7,13 +8,20 @@ pygame.init()
 screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
 pygame.display.set_caption("Butterbrot")
 clock = pygame.time.Clock()
+
+from player import Player
+faces = dict()
+for path in os.listdir("images/"):
+    faces[path.removesuffix(".png")] = pygame.image.load(f"images/{path}")
+player = Player(screen, pygame.Vector2(0, 0),"Invisibility", faces)
+
 map.init()
 map.load_map("test")
 
 
 running = True
 async def main():
-    global running,screen
+    global running,screen,player
     while running: 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -21,19 +29,24 @@ async def main():
             elif event.type == pygame.VIDEORESIZE:
                 screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
             
-            if pygame.key.get_pressed()[pygame.K_a] == True:
-                map.cam.x += 10
-            elif pygame.key.get_pressed()[pygame.K_d] == True:
-                map.cam.x -= 10
-            if pygame.key.get_pressed()[pygame.K_w] == True:
-                map.cam.y += 10
-            elif pygame.key.get_pressed()[pygame.K_s] == True:
-                map.cam.y -= 10
-            if pygame.key.get_pressed()[pygame.K_ESCAPE] == True:
-                print("Escape key pressed")    
+        if pygame.key.get_pressed()[pygame.K_a] == True:
+            map.cam.x += 10
+        if pygame.key.get_pressed()[pygame.K_d] == True:
+            map.cam.x -= 10
+        if pygame.key.get_pressed()[pygame.K_w] == True:
+            map.cam.y += 10
+        if pygame.key.get_pressed()[pygame.K_s] == True:
+            map.cam.y -= 10
+        if pygame.key.get_pressed()[pygame.K_ESCAPE] == True:
+            print("Escape key pressed")   
+
+
+        keys = pygame.key.get_pressed()
+        player.move(keys[pygame.K_w], keys[pygame.K_a], keys[pygame.K_s], keys[pygame.K_d]) 
 
         screen.fill("blue")
         map.draw()
+        player.draw()
         pygame.display.update()
         pygame.display.flip()
         clock.tick(60)
