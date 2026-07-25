@@ -1,11 +1,11 @@
 import pygame
 from math import sqrt
+import map
 
 class Player():
     def __init__(self, window, pos, face, faces):
         self.window = window
         self.pos = pos
-        self.lscale = 1
         self.face = face
         self.faces = faces
         self.health = 100
@@ -26,7 +26,7 @@ class Player():
         print("Drawing player at position: ", (self.pos[0]+midx, self.pos[1]+midy))
         out = self.faces["".join([str(x) for x in self.faceImage])]
         out2 = pygame.transform.scale(out, (out.get_width()*self.lscale,out.get_height()*self.lscale))
-        out_rect = out2.get_rect(center=(midx+self.pos[0], midy+self.pos[1]))
+        out_rect = out2.get_rect(center=(midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y))
         surface.blit(out2, out_rect)
 
     def move(self, w, a, s, d):
@@ -38,13 +38,23 @@ class Player():
             self.pos = (self.pos[0] + horizontalMove * self.speed, self.pos[1] - verticalMove * self.speed)
         if horizontalMove == 0 and verticalMove == 0:
             self.walkCount = 0
-        else: 
+        elif not (abs(horizontalMove) == 1 and abs(verticalMove) == 1): 
             self.faceImage[6] = int(verticalMove == 1)
             self.faceImage[7] = int(horizontalMove == -1)
             self.faceImage[8] = int(verticalMove == -1)
             self.faceImage[9] = int(horizontalMove == 1)
             self.walkCount += 1
+<<<<<<< HEAD
         self.faceImage[11] = (self.walkCount * self.speed // 15) % 4
+=======
+        else:
+            self.faceImage[6] = 0
+            self.faceImage[7] = int(horizontalMove == -1)
+            self.faceImage[8] = 0
+            self.faceImage[9] = int(horizontalMove == 1)
+            self.walkCount += 1
+        self.faceImage[11] = (self.walkCount * self.speed // 25) % 4
+>>>>>>> refs/remotes/origin/main
 
     def swap(self, newFace):
         oldFace = newFace
