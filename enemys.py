@@ -21,7 +21,7 @@ def spawn(x,y,type):
     tempenemy = enemy(x,y,type)
     enemys.append(tempenemy)
 
-def del(id):
+def delete(id):
     global enemys
     for en in enemys:
         if en.id == id:
