@@ -3,6 +3,7 @@ import asyncio
 import os
 
 import map
+import enemys
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
@@ -17,9 +18,10 @@ player = Player(screen, pygame.Vector2(0, 0),"Invisibility", faces)
 
 map.init()
 map.load_map("test")
-
+enemys.init()
 
 running = True
+enemys.spawn(screen, (100, 100), 100, 5, 2, "Face1")
 async def main():
     global running,screen,player
     while running: 
@@ -47,6 +49,9 @@ async def main():
         screen.fill("blue")
         map.draw()
         player.draw()
+        for enemy in enemys.enemys.values():
+            enemy.update()
+            enemy.draw()
         pygame.display.update()
         pygame.display.flip()
         clock.tick(60)

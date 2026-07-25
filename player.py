@@ -44,7 +44,7 @@ class Player():
             self.faceImage[8] = int(verticalMove == -1)
             self.faceImage[9] = int(horizontalMove == 1)
             self.walkCount += 1
-        self.faceImage[11] = (self.walkCount * self.speed // 25) % 4
+        self.faceImage[11] = (self.walkCount * self.speed // 15) % 4
 
     def swap(self, newFace):
         oldFace = newFace

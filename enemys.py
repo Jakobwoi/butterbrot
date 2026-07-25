@@ -44,18 +44,17 @@ class enemy:
 
         self.walkCount = 0
         self.loopCount = 0
-        self.loopLength = 30
+        self.loopLength = 100
     
-        self.moveX = random.randint(-1, 1)
-        self.moveY = random.randint(-1, 1)
+        self.moveX = 0
+        self.moveY = 1
     
     def update(self):
         if self.loopCount < self.loopLength:
             self.loopCount += 1
         else:
             self.loopCount = 0
-            self.moveX = random.randint(-1, 1)
-            self.moveY = random.randint(-1, 1)
+            self.moveY = self.moveY * -1
         self.move(self.moveX, self.moveY)
         self.draw()
 
@@ -73,7 +72,7 @@ class enemy:
             self.current[len(self.type)+4] = int(x == 1)
             print("".join([str(x) for x in self.current]))
             self.walkCount += 1
-        self.current[len(self.type)+6] = self.walkCount % 4
+        self.current[len(self.type)+6] = (self.walkCount * self.speed // 5) % 4
 
     def draw(self):
         sprite = self.sprites["".join([str(x) for x in self.current])]
