@@ -17,6 +17,7 @@ class enemy:
         self.health = health
         self.strength = strength
         self.speed = speed
+        self.lscale = 1
         self.type = type
         self.id = id
         self.current = list(type + "_0010_0")
@@ -84,13 +85,34 @@ class enemy:
             self.current[len(self.type)+2] = int(x == -1)
             self.current[len(self.type)+3] = int(y == -1)
             self.current[len(self.type)+4] = int(x == 1)
-            print("".join([str(x) for x in self.current]))
+            # print("".join([str(x) for x in self.current]))
             self.walkCount += 1
         self.current[len(self.type)+6] = (self.walkCount * self.speed // 15) % 4
 
     def draw(self):
         sprite = self.sprites["".join([str(x) for x in self.current])]
-        self.window.blit(sprite, (self.pos[0] + map.cam.x, self.pos[1] + map.cam.y))
+        surface = pygame.display.get_surface()
+        if surface is None:
+            return
+        midx = surface.get_width() / 2
+        midy = surface.get_height() / 2
+        out = sprite
+        out2 = pygame.transform.scale(out, (out.get_width()*self.lscale,out.get_height()*self.lscale))
+        out_rect = out2.get_rect(center=(midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y))
+        surface.blit(out2, out_rect)
+    def getMapPos(self):
+        surface = pygame.display.get_surface()
+        if surface is None:
+            return
+        midx = surface.get_width() / 2
+        midy = surface.get_height() / 2
+        return (midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y)
+
+    def checkCollision(self, playerPos, minDistance):
+        pos = self.getMapPos()
+        distance = sqrt((pos[0] - playerPos[0])**2 + (pos[1] - playerPos[1])**2)
+        # print("Distance to player: ", distance, "Min distance: ", minDistance)
+        return distance < minDistance
 
 def spawn(window, pos, health, strength, speed, type):
     global enemys

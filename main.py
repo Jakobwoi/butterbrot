@@ -63,6 +63,7 @@ async def main():
         for enemy in enemys.enemys.values():
             enemy.update()
             enemy.draw()
+            enemy.checkCollision(player.getMapPos(), 50)
         pygame.display.update()
         pygame.display.flip()
         clock.tick(60)
