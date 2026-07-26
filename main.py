@@ -1,6 +1,7 @@
 import pygame
 import asyncio
 import os
+from statue import Statue
 
 import map
 import enemys
@@ -15,7 +16,7 @@ from player import Player
 faces = dict()
 for path in os.listdir("images/"):
     faces[path.removesuffix(".png")] = pygame.image.load(f"images/{path}")
-player = Player(screen, pygame.Vector2(0, 0),"Invisibility", faces)
+player = Player(screen, pygame.Vector2(0, 0),"Normal", faces)
 
 map.init()
 map.load_map("level1")
@@ -27,6 +28,10 @@ enemys.init()
 levelFile = open("level1.txt")
 data = levelFile.readlines()
 tileNames = ["grass_middle_tile", "wall"]
+statues = [
+    Statue(screen, pygame.Vector2(500, 70), faces, "Invisibility"),
+    Statue(screen, pygame.Vector2(1000, 200), faces, "Super Speed")
+]
 for y in range(len(data)):
     line = data[y].strip().split(" ")
     for x in range(len(line)):
@@ -69,6 +74,16 @@ async def main():
         screen.fill("blue")
         map.draw()
         player.draw()
+        for statue in statues:
+            statue.pos = (statue.pos[0] - cameraMove[0], statue.pos[1] + cameraMove[1])
+            statue.draw()
+            if statue.checkCollision(player.pos, faces["".join([str(x) for x in player.faceImage])].get_size()):
+                if statue.canSwap:
+                    statue.swap(player.swap(statue.face))
+                    print(player.face, statue.face)
+                    statue.canSwap = False
+            else:
+                statue.canSwap = True
         for enemy in enemys.enemys.values():
             enemy.update()
             enemy.draw()
