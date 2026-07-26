@@ -7,7 +7,7 @@ import enemys
 import essentials as es
 
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
+screen = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption("Butterbrot")
 clock = pygame.time.Clock()
 
@@ -38,11 +38,11 @@ enemys.spawn(screen, (100, 100), 100, 5, 2, "Face1")
 async def main():
     global running,screen,player
     while running:
-        if level == 1 and not l1playing:
-            l1music.play(-1)
-            
-        elif level != 1 and l1playing:
-            l1music.stop()
+        #if level == 1 and not l1playing:
+        #    l1music.play(-1)
+        #    
+        #elif level != 1 and l1playing:
+        #    l1music.stop()
             
 
 
