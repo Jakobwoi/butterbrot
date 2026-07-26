@@ -24,6 +24,15 @@ l1music = es.load_music("oberweltidk")
 l1playing = False
 enemys.init()
 
+levelFile = open("level1.txt")
+data = levelFile.readlines()
+tileNames = ["grass_middle_tile", "wall"]
+for y in range(len(data)):
+    line = data[y].strip().split(" ")
+    for x in range(len(line)):
+        map.maps["level1"][0].append(map.tile(tileNames[int(line[x])], x * 256, y * 256, 32*8, 32*8, 1))
+levelFile.close()
+
 running = True
 enemys.spawn(screen, (100, 100), 100, 5, 2, "Face1")
 async def main():
@@ -63,7 +72,6 @@ async def main():
         for enemy in enemys.enemys.values():
             enemy.update()
             enemy.draw()
-            enemy.checkCollision(player.getMapPos(), 50)
         pygame.display.update()
         pygame.display.flip()
         clock.tick(60)
