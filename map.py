@@ -1,5 +1,6 @@
 import pygame
 import essentials as es
+from player import player
 
 screen = None
 class camera:
@@ -18,6 +19,13 @@ class tile:
         self.lscale = lscale
         self.is_exit = is_exit
 
+    def checkCollision(self, playerPos, playerSize):
+        tileRect = pygame.Rect(self.x, self.y, self.sizex*self.lscale, self.sizey*self.lscale)
+        playerRect = pygame.Rect(playerPos, playerSize)
+        pygame.draw.rect(screen, "red", tileRect, 3)
+        pygame.draw.rect(screen, "blue", playerRect, 3)
+        return tileRect.colliderect(playerRect)
+
 def init():
     global map
     map = [[],[]]
@@ -26,6 +34,7 @@ def load_map(name):
     global map
     map = maps.get(name, [[],[]])
 
+objects = {}
 
 maps = {
     "test": [
@@ -40,7 +49,7 @@ maps = {
          tile("grass_upper_right_tile", 256*8, 0, 32*8, 32*8, 4)],
         # Row 1 (middle)
         [tile("grass_left_tile", 0, 256*4, 32*8, 32*8, 4), 
-         tile("test", 256*4, 256*4, 32*8, 32*8, 4, is_exit=True), 
+         tile("test", 256*4, 256*4, 32*8, 32*8, 4), 
          tile("grass_right_tile", 256*8, 256*4, 32*8, 32*8, 4)],
         # Row 2 (bottom)
         [tile("grass_lower_left_tile", 0, 256*8, 32*8, 32*8, 4), 
@@ -52,6 +61,8 @@ maps = {
 
 
 def draw():
+    global player
+    player.blocked = False
     surface = pygame.display.get_surface()
     if surface is None:
         return
@@ -64,6 +75,10 @@ def draw():
             y.out2 = pygame.transform.scale(y.out, (y.sizex*y.lscale,y.sizey*y.lscale))
             y.out_rect = y.out2.get_rect(center=(midx+y.x+cam.x, midy+y.y+cam.y))
             surface.blit(y.out2, y.out_rect)
+            if y.checkCollision(player.pos, player.size):
+                player.blocked = True
+            else:
+                player.blocked = False
 
 def check_exit(player_pos):
     """Prüft, ob der Spieler auf dem Ausgang (middle Tile) ist"""

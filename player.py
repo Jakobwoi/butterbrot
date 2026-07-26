@@ -16,6 +16,7 @@ class Player():
         self.telePoint = pos
         self.faceImage = list("Face0_0010_0")
         self.walkCount = 0
+        self.blocked = False
 
 
     def draw(self):
@@ -31,30 +32,31 @@ class Player():
         surface.blit(out2, out_rect)
 
     def move(self, w, a, s, d):
-        horizontalMove = d - a
-        verticalMove = w - s
-        if not (abs(horizontalMove) == 1 and abs(verticalMove) == 1):
-            moveVector = (horizontalMove * sqrt(2) * self.speed, verticalMove * sqrt(2) * self.speed)
-        else:
-            moveVector = (horizontalMove * self.speed, verticalMove * self.speed)
-        self.pos = (self.pos[0] + moveVector[0], self.pos[1] - moveVector[1])
-        
-        if horizontalMove == 0 and verticalMove == 0:
-            self.walkCount = 0
-        elif not (abs(horizontalMove) == 1 and abs(verticalMove) == 1): 
-            self.faceImage[6] = int(verticalMove == 1)
-            self.faceImage[7] = int(horizontalMove == -1)
-            self.faceImage[8] = int(verticalMove == -1)
-            self.faceImage[9] = int(horizontalMove == 1)
-            self.walkCount += 1
-        else:
-            self.faceImage[6] = 0
-            self.faceImage[7] = int(horizontalMove == -1)
-            self.faceImage[8] = 0
-            self.faceImage[9] = int(horizontalMove == 1)
-            self.walkCount += 1
-        self.faceImage[11] = (self.walkCount * self.speed // 15) % 4
-        return moveVector
+        if self.blocked == False:
+            horizontalMove = d - a
+            verticalMove = w - s
+            if not (abs(horizontalMove) == 1 and abs(verticalMove) == 1):
+                moveVector = (horizontalMove * sqrt(2) * self.speed, verticalMove * sqrt(2) * self.speed)
+            else:
+                moveVector = (horizontalMove * self.speed, verticalMove * self.speed)
+            self.pos = (self.pos[0] + moveVector[0], self.pos[1] - moveVector[1])
+            
+            if horizontalMove == 0 and verticalMove == 0:
+                self.walkCount = 0
+            elif not (abs(horizontalMove) == 1 and abs(verticalMove) == 1): 
+                self.faceImage[6] = int(verticalMove == 1)
+                self.faceImage[7] = int(horizontalMove == -1)
+                self.faceImage[8] = int(verticalMove == -1)
+                self.faceImage[9] = int(horizontalMove == 1)
+                self.walkCount += 1
+            else:
+                self.faceImage[6] = 0
+                self.faceImage[7] = int(horizontalMove == -1)
+                self.faceImage[8] = 0
+                self.faceImage[9] = int(horizontalMove == 1)
+                self.walkCount += 1
+            self.faceImage[11] = (self.walkCount * self.speed // 15) % 4
+            return moveVector
 
     def swap(self, newFace):
         oldFace = self.face
