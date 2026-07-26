@@ -8,7 +8,7 @@ import enemys
 import essentials as es
 
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080))
+screen = pygame.display.set_mode((900, 700), pygame.RESIZABLE)
 pygame.display.set_caption("Butterbrot")
 clock = pygame.time.Clock()
 
@@ -29,7 +29,7 @@ levelFile = open("level1.txt")
 data = levelFile.readlines()
 tileNames = ["grass_middle_tile", "wall"]
 statues = [
-    Statue(screen, pygame.Vector2(500, 70), faces, "Invisibility"),
+    Statue(screen, pygame.Vector2(1500, 500), faces, "Invisibility"),
     Statue(screen, pygame.Vector2(1000, 200), faces, "Super Speed")
 ]
 for y in range(len(data)):
@@ -43,11 +43,11 @@ enemys.spawn(screen, (100, 100), 100, 5, 2, "Face1")
 async def main():
     global running,screen,player
     while running:
-        #if level == 1 and not l1playing:
-        #    l1music.play(-1)
-        #    
-        #elif level != 1 and l1playing:
-        #    l1music.stop()
+        if level == 1 and not l1playing:
+            l1music.play(-1)
+            
+        elif level != 1 and l1playing:
+            l1music.stop()
             
 
 
@@ -63,7 +63,7 @@ async def main():
         map.cam.y += cameraMove[1]
 
         if pygame.key.get_pressed()[pygame.K_ESCAPE] == True:
-            print("Escape key pressed")   
+            print("Escape key pressed")
 
         if level == 1:
             if map.check_exit(player.pos):
@@ -77,10 +77,10 @@ async def main():
         for statue in statues:
             statue.pos = (statue.pos[0] - cameraMove[0], statue.pos[1] + cameraMove[1])
             statue.draw()
-            if statue.checkCollision(player.pos, faces["".join([str(x) for x in player.faceImage])].get_size()):
+            if statue.checkCollision((player.pos[0] + map.cam.x + screen.get_width() // 2 - 170, player.pos[1] + map.cam.y + screen.get_height() // 2 - faces["Face0_1000_1"].get_height() // 2), (340, faces["".join([str(x) for x in player.faceImage])].get_height())):
                 if statue.canSwap:
                     statue.swap(player.swap(statue.face))
-                    print(player.face, statue.face)
+                    # print(player.face, statue.face)
                     statue.canSwap = False
             else:
                 statue.canSwap = True
