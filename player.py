@@ -24,11 +24,19 @@ class Player():
             return
         midx = surface.get_width() / 2
         midy = surface.get_height() / 2
-        print("Drawing player at position: ", (self.pos[0]+midx, self.pos[1]+midy))
+        # print("Drawing player at position: ", (self.pos[0]+midx, self.pos[1]+midy))
         out = self.faces["".join([str(x) for x in self.faceImage])]
         out2 = pygame.transform.scale(out, (out.get_width()*self.lscale,out.get_height()*self.lscale))
         out_rect = out2.get_rect(center=(midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y))
         surface.blit(out2, out_rect)
+
+    def getMapPos(self):
+        surface = pygame.display.get_surface()
+        if surface is None:
+            return
+        midx = surface.get_width() / 2
+        midy = surface.get_height() / 2
+        return (midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y)
 
     def move(self, w, a, s, d):
         horizontalMove = d - a
