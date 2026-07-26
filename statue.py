@@ -7,12 +7,13 @@ class Statue():
         self.faces = faces
         self.face = face
         self.canSwap = True
+        self.drawPos = pos
     
     def draw(self):
-        self.window.blit(self.faces[f"Statue_{self.face}"], self.pos)
+        self.window.blit(self.faces[f"Statue_{self.face}"], self.drawPos)
     
     def checkCollision(self, playerPos, playerSize):
-        statueRect = pygame.Rect(self.pos, self.faces[f"Statue_{self.face}"].get_size())
+        statueRect = pygame.Rect(self.drawPos, self.faces[f"Statue_{self.face}"].get_size())
         playerRect = pygame.Rect(playerPos, playerSize)
         # playerRect = pygame.Rect((50, 100), (100, 200))
         pygame.draw.rect(self.window, "red", statueRect, 3)
