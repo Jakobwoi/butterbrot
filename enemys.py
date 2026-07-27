@@ -43,13 +43,26 @@ class enemy:
             print("Loaded sprite: " + type + "_"+ ''.join(dirs) +"_" + str(j))
             self.sprites[type + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(type + "_" + ''.join(dirs) + "_" + str(j))
             # dirs[i+2] = "0"
-
+        self.sprites[type + "_attack"] = es.load_sprite(type + "_attack")
         self.walkCount = 0
         self.loopCount = 0
         self.loopLength = 100
     
         self.moveX = 0
         self.moveY = 1
+
+    def updateType(self, newType):
+        self.type = newType
+        self.current = list(newType + "_0010_0")
+        self.sprites = dict()
+        dirs = list("0010")
+        for j in range(4):
+            print("Loaded sprite: " + newType + "_"+ ''.join(dirs) +"_" + str(j))
+            self.sprites[newType + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(newType + "_" + ''.join(dirs) + "_" + str(j))
+        dirs = list("1000")
+        for j in range(4):
+            print("Loaded sprite: " + newType + "_"+ ''.join(dirs) +"_" + str(j))
+            self.sprites[newType + "_"+ ''.join(dirs) +"_" + str(j)] = es.load_sprite(newType + "_" + ''.join(dirs) + "_" + str(j))
 
     def changeType(self, newType):
         self.type = newType
@@ -99,19 +112,12 @@ class enemy:
         out = sprite
         out2 = pygame.transform.scale(out, (out.get_width()*self.lscale,out.get_height()*self.lscale))
         out_rect = out2.get_rect(center=(midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y))
+        pygame.draw.circle(surface, (255, 0, 0), out_rect.center, 500, 2)
         surface.blit(out2, out_rect)
-    def getMapPos(self):
-        surface = pygame.display.get_surface()
-        if surface is None:
-            return
-        midx = surface.get_width() / 2
-        midy = surface.get_height() / 2
-        return (midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y)
-
+    
     def checkCollision(self, playerPos, minDistance):
-        pos = self.getMapPos()
+        pos = self.pos
         distance = sqrt((pos[0] - playerPos[0])**2 + (pos[1] - playerPos[1])**2)
-        # print("Distance to player: ", distance, "Min distance: ", minDistance)
         return distance < minDistance
 
 def spawn(window, pos, health, strength, speed, type):

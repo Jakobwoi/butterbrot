@@ -31,14 +31,6 @@ class Player():
         out_rect = out2.get_rect(center=(midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y))
         surface.blit(out2, out_rect)
 
-    def getMapPos(self):
-        surface = pygame.display.get_surface()
-        if surface is None:
-            return
-        midx = surface.get_width() / 2
-        midy = surface.get_height() / 2
-        return (midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y)
-
     def move(self, w, a, s, d):
         if self.blocked == False:
             horizontalMove = d - a

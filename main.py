@@ -40,9 +40,10 @@ for y in range(len(data)):
 levelFile.close()
 
 running = True
-enemys.spawn(screen, (100, 100), 100, 5, 2, "Face1")
+enemys.spawn(screen, (500, 100), 100, 5, 2, "enemy0")
 async def main():
     global running,screen,player
+    gameOver = False
     while running:
         if level == 1 and not l1playing:
             l1music.play(-1)
@@ -57,6 +58,8 @@ async def main():
                 screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
             
         keys = pygame.key.get_pressed()
+        if gameOver:
+            continue
         cameraMove = player.move(keys[pygame.K_w], keys[pygame.K_a], keys[pygame.K_s], keys[pygame.K_d]) 
         map.cam.x -= cameraMove[0]
         map.cam.y += cameraMove[1]
@@ -83,6 +86,13 @@ async def main():
         for enemy in enemys.enemys.values():
             enemy.update()
             enemy.draw()
+            collision = enemy.checkCollision(player.pos, 500)
+            if collision:
+                enemy.current = list("enemy0_attack")
+                enemy.draw()
+                gameOver = True
+                es.game_over()
+
         pygame.display.update()
         pygame.display.flip()
         clock.tick(60)
