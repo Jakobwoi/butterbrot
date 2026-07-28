@@ -14,8 +14,8 @@ clock = pygame.time.Clock()
 
 from player import Player
 faces = dict()
-for path in os.listdir("images/"):
-    faces[path.removesuffix(".png")] = pygame.image.load(f"images/{path}")
+for path in os.listdir(str(es.BASE_DIR / "images")):
+    faces[path.removesuffix(".png")] = pygame.image.load( str(es.BASE_DIR / "images" / path))
 player = Player(screen, pygame.Vector2(0, 0),"Normal", faces)
 
 map.init()
@@ -25,7 +25,7 @@ l1music = es.load_music("oberweltidk")
 l1playing = False
 enemys.init()
 
-levelFile = open("level1.txt")
+levelFile = open(es.BASE_DIR / "level1.txt")
 data = levelFile.readlines()
 tileNames = ["grass_middle_tile", "wall"]
 statues = [
