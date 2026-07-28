@@ -112,7 +112,7 @@ class enemy:
         out = sprite
         out2 = pygame.transform.scale(out, (out.get_width()*self.lscale,out.get_height()*self.lscale))
         out_rect = out2.get_rect(center=(midx+self.pos[0]+map.cam.x, midy+self.pos[1]+map.cam.y))
-        pygame.draw.circle(surface, (255, 0, 0), out_rect.center, 500, 2)
+        # pygame.draw.circle(surface, (255, 0, 0), out_rect.center, 500, 2)
         surface.blit(out2, out_rect)
     
     def checkCollision(self, playerPos, minDistance):
